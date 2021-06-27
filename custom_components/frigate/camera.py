@@ -32,7 +32,6 @@ from .const import (
     NAME,
     STATE_DETECTED,
     STATE_IDLE,
-    VERSION,
 )
 
 _LOGGER: logging.Logger = logging.getLogger(__name__)
@@ -112,7 +111,7 @@ class FrigateCamera(FrigateEntity, Camera):
             },
             "via_device": get_frigate_device_identifier(self._config_entry),
             "name": get_friendly_name(self._cam_name),
-            "model": VERSION,
+            "model": self._get_model(),
             "manufacturer": NAME,
         }
 
@@ -191,7 +190,7 @@ class FrigateMqttSnapshots(FrigateMQTTEntity, Camera):
             },
             "via_device": get_frigate_device_identifier(self._config_entry),
             "name": get_friendly_name(self._cam_name),
-            "model": VERSION,
+            "model": self._get_model(),
             "manufacturer": NAME,
         }
 
