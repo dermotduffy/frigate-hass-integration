@@ -14,7 +14,12 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
 from .api import FrigateApiClient, FrigateApiClientError
-from .const import CONF_RTMP_URL_TEMPLATE, DEFAULT_HOST, DOMAIN
+from .const import (
+    CONF_NOTIFICATION_PROXY_ENABLE,
+    CONF_RTMP_URL_TEMPLATE,
+    DEFAULT_HOST,
+    DOMAIN,
+)
 
 _LOGGER: logging.Logger = logging.getLogger(__name__)
 
@@ -112,18 +117,25 @@ class FrigateOptionsFlowHandler(config_entries.OptionsFlow):
         schema: dict[Any, Any] = {}
 
         if self.show_advanced_options:
-            # The input URL is not validated as being a URL to allow for the
-            # possibility the template input won't be a valid URL until after
-            # it's rendered.
             schema.update(
                 {
-                    vol.Required(
+                    # The input URL is not validated as being a URL to allow for the
+                    # possibility the template input won't be a valid URL until after
+                    # it's rendered.
+                    vol.Optional(
                         CONF_RTMP_URL_TEMPLATE,
                         default=self._config_entry.options.get(
                             CONF_RTMP_URL_TEMPLATE,
                             "",
                         ),
                     ): str,
+                    vol.Optional(
+                        CONF_NOTIFICATION_PROXY_ENABLE,
+                        default=self._config_entry.options.get(
+                            CONF_NOTIFICATION_PROXY_ENABLE,
+                            True,
+                        ),
+                    ): bool,
                 }
             )
 
